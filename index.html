@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TheAxis-Network</title>
+  <meta name="description" content="TheAxis-Network: open tools for a freer internet. Browse every repository and member, read the source and download anything.">
+  <meta name="theme-color" content="#07070d">
+  <meta property="og:title" content="TheAxis-Network">
+  <meta property="og:description" content="Bypassing internet censorship as we go. Browse every repository, read the source, download anything.">
+  <meta property="og:image" content="assets/avatar.png">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    try { const t = localStorage.getItem("axis:theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
+  </script>
+</head>
+<body>
+
+<!-- ───────────── SVG sprite + filters ───────────── -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="liquid" x="0" y="0" width="100%" height="100%" filterUnits="objectBoundingBox">
+      <feTurbulence type="fractalNoise" baseFrequency="0.009 0.014" numOctaves="2" seed="11" result="noise"/>
+      <feGaussianBlur in="noise" stdDeviation="2.5" result="soft"/>
+      <feDisplacementMap in="SourceGraphic" in2="soft" scale="26" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <linearGradient id="grad-brand" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8b7bff"/>
+      <stop offset=".5" stop-color="#38d6f5"/>
+      <stop offset="1" stop-color="#ff5fae"/>
+    </linearGradient>
+  </defs>
+
+  <symbol id="i-repo" viewBox="0 0 24 24"><path d="M5 4.5A2.5 2.5 0 0 1 7.5 2H19v16H7.5A2.5 2.5 0 0 0 5 20.5v-16Z"/><path d="M5 20.5A2.5 2.5 0 0 0 7.5 23H19v-5"/><path d="M9 6h6"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2.8 2.8 5.7 6.3.9-4.55 4.43 1.07 6.27L12 17.13 6.38 20.1l1.07-6.27L2.9 9.4l6.3-.9L12 2.8Z"/></symbol>
+  <symbol id="i-fork" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.4"/><circle cx="18" cy="5" r="2.4"/><circle cx="12" cy="19" r="2.4"/><path d="M6 7.4v1.1a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V7.4M12 11.5v5.1"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m0 0-4.5-4.5M12 15l4.5-4.5"/><path d="M4 16.5V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2.5"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7.2A2.2 2.2 0 0 1 5.2 5h3.9l2 2.2h7.7A2.2 2.2 0 0 1 21 9.4v8.4a2.2 2.2 0 0 1-2.2 2.2H5.2A2.2 2.2 0 0 1 3 17.8V7.2Z"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2.5H7A2.5 2.5 0 0 0 4.5 5v14A2.5 2.5 0 0 0 7 21.5h10a2.5 2.5 0 0 0 2.5-2.5V8L14 2.5Z"/><path d="M14 2.5V8h5.5"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><path d="M14 2.5H7A2.5 2.5 0 0 0 4.5 5v14A2.5 2.5 0 0 0 7 21.5h10a2.5 2.5 0 0 0 2.5-2.5V8L14 2.5Z"/><path d="M14 2.5V8h5.5M10 12.5l-2 2 2 2M14 12.5l2 2-2 2"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 2.5H7A2.5 2.5 0 0 0 4.5 5v14A2.5 2.5 0 0 0 7 21.5h10a2.5 2.5 0 0 0 2.5-2.5V8L14 2.5Z"/><path d="M14 2.5V8h5.5M8.5 13h7M8.5 17h5"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="9.5" r="1.8"/><path d="m21 15.5-4.8-4.8L6 20.5"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.6"/><path d="M2.5 20.5a6.5 6.5 0 0 1 13 0"/><path d="M16 4.6a3.6 3.6 0 0 1 0 6.8M18.5 14.2a6.5 6.5 0 0 1 3 6.3"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></symbol>
+  <symbol id="i-github" viewBox="0 0 24 24"><path stroke="none" fill="currentColor" d="M12 .6C5.7.6.6 5.7.6 12c0 5.04 3.27 9.31 7.8 10.82.57.1.78-.25.78-.55v-1.93c-3.17.69-3.84-1.53-3.84-1.53-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.68 1.24 3.33.95.1-.74.4-1.24.73-1.53-2.53-.29-5.2-1.27-5.2-5.64 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.14 1.17a10.9 10.9 0 0 1 5.72 0c2.18-1.48 3.14-1.17 3.14-1.17.62 1.57.23 2.73.11 3.02.73.8 1.18 1.82 1.18 3.07 0 4.38-2.67 5.35-5.21 5.63.41.36.78 1.06.78 2.14v3.17c0 .3.21.66.79.55A11.41 11.41 0 0 0 23.4 12C23.4 5.7 18.3.6 12 .6Z"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="12" height="12" rx="2.5"/><path d="M15.5 8.5V6A2.5 2.5 0 0 0 13 3.5H6A2.5 2.5 0 0 0 3.5 6v7A2.5 2.5 0 0 0 6 15.5h2.5"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m4.5 12.5 5 5 10-11"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5m0 0 6-6m-6 6 6 6"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m0 0-6-6m6 6-6 6"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.6-4.5L4 8"/><path d="M4 3.5V8h4.5M4 13a8 8 0 0 0 14.6 4.5L20 16"/><path d="M20 20.5V16h-4.5"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20.5 20.5-4.5-4.5"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.2M12 19.8V22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M2 12h2.2M19.8 12H22M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></symbol>
+  <symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18M7 21h10M5 7h14M5 7l-3 7a3.5 3.5 0 0 0 6 0L5 7Zm14 0-3 7a3.5 3.5 0 0 0 6 0l-3-7Z"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21.5s7-6.1 7-12a7 7 0 0 0-14 0c0 5.9 7 12 7 12Z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+  <symbol id="i-zip" viewBox="0 0 24 24"><path d="M14 2.5H7A2.5 2.5 0 0 0 4.5 5v14A2.5 2.5 0 0 0 7 21.5h10a2.5 2.5 0 0 0 2.5-2.5V8L14 2.5Z"/><path d="M10 3v2h2v2h-2v2h2v2h-2v2"/><rect x="9" y="14" width="4" height="4" rx="1"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.4"/><circle cx="6" cy="19" r="2.4"/><circle cx="18" cy="7" r="2.4"/><path d="M6 7.4v9.2M18 9.4c0 4.6-6 3.6-11 7.6"/></symbol>
+  <symbol id="i-terminal" viewBox="0 0 24 24"><rect x="2.5" y="4" width="19" height="16" rx="2.5"/><path d="m7 9.5 3 2.5-3 2.5M12.5 15h4.5"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 2.5c.6 4.7 2.8 6.9 7.5 7.5-4.7.6-6.9 2.8-7.5 7.5-.6-4.7-2.8-6.9-7.5-7.5 4.7-.6 6.9-2.8 7.5-7.5Z"/><path d="M19 15.5c.3 2 1.2 2.9 3 3.2-1.8.3-2.7 1.2-3 3.2-.3-2-1.2-2.9-3-3.2 1.8-.3 2.7-1.2 3-3.2Z"/></symbol>
+  <symbol id="i-pulse" viewBox="0 0 24 24"><path d="M2 12h4l2.5-6 4 12 3-8 1.5 2H22"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 100 100"><path stroke="none" fill="currentColor" d="M43.64 13.55L44.23 4.36L55.77 4.36L56.36 13.55A37 37 0 0 1 71.28 19.73L78.19 13.65L86.35 21.81L80.27 28.72A37 37 0 0 1 86.45 43.64L95.64 44.23L95.64 55.77L86.45 56.36A37 37 0 0 1 80.27 71.28L86.35 78.19L78.19 86.35L71.28 80.27A37 37 0 0 1 56.36 86.45L55.77 95.64L44.23 95.64L43.64 86.45A37 37 0 0 1 28.72 80.27L21.81 86.35L13.65 78.19L19.73 71.28A37 37 0 0 1 13.55 56.36L4.36 55.77L4.36 44.23L13.55 43.64A37 37 0 0 1 19.73 28.72L13.65 21.81L21.81 13.65L28.72 19.73A37 37 0 0 1 43.64 13.55Z"/></symbol>
+</svg>
+
+<!-- ───────────── Ambient background ───────────── -->
+<div class="ambient" aria-hidden="true">
+  <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span><span class="blob b4"></span>
+  <svg class="grid" width="100%" height="100%">
+    <defs>
+      <pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="1.2" cy="1.2" r="1.2" fill="currentColor"/></pattern>
+      <radialGradient id="fade" cx="50%" cy="30%" r="70%"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+      <mask id="fade-mask"><rect width="100%" height="100%" fill="url(#fade)"/></mask>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#dots)" mask="url(#fade-mask)"/>
+  </svg>
+</div>
+
+<!-- ───────────── Navigation ───────────── -->
+<header class="nav-wrap">
+  <nav class="nav liquid" aria-label="Main">
+    <span class="liquid-filter"></span><span class="liquid-tint"></span><span class="liquid-shine"></span>
+    <a class="brand" href="#/" aria-label="TheAxis-Network home">
+      <img src="assets/logo.svg" alt="" width="34" height="34">
+      <span>axisnetwork<b>.</b></span>
+    </a>
+    <div class="nav-links">
+      <a href="#/repos">Repos</a>
+      <a href="#/members">Members</a>
+      <a href="#/contact">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <button class="sync-pill" id="sync-pill" type="button" title="Sync with GitHub now">
+        <span class="sync-dot"></span><span class="sync-text">Connecting…</span>
+      </button>
+      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle colour theme">
+        <svg class="ic ic-sun"><use href="#i-sun"/></svg><svg class="ic ic-moon"><use href="#i-moon"/></svg>
+      </button>
+      <a class="icon-btn" href="https://github.com/TheAxis-Network" target="_blank" rel="noopener" aria-label="TheAxis-Network on GitHub">
+        <svg class="ic"><use href="#i-github"/></svg>
+      </a>
+    </div>
+  </nav>
+</header>
+
+<main id="app">
+
+  <!-- ═════════════ HOME VIEW ═════════════ -->
+  <div id="view-home" class="view">
+
+    <section class="hero container">
+      <div class="hero-copy reveal">
+        <span class="eyebrow glass"><svg class="ic"><use href="#i-sparkle"/></svg> Open-source collective</span>
+        <h1>Bypassing internet censorship <span class="grad-text">as we go.</span></h1>
+        <p class="lede">TheAxis-Network builds open tools for a freer internet. Browse every repository, read the source and download anything, straight from GitHub and always in sync.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary liquid" href="#/repos">
+            <span class="liquid-filter"></span><span class="liquid-tint"></span><span class="liquid-shine"></span>
+            <svg class="ic"><use href="#i-layers"/></svg> Explore repositories
+          </a>
+          <a class="btn btn-ghost glass" href="#/members"><svg class="ic"><use href="#i-users"/></svg> Meet the members</a>
+        </div>
+      </div>
+
+      <div class="hero-art reveal" aria-hidden="true">
+        <svg viewBox="0 0 520 520" class="orbit-svg">
+          <defs>
+            <radialGradient id="orb-fill" cx="35%" cy="28%" r="80%">
+              <stop offset="0" stop-color="#fff" stop-opacity=".55"/>
+              <stop offset=".35" stop-color="#fff" stop-opacity=".12"/>
+              <stop offset="1" stop-color="#fff" stop-opacity=".04"/>
+            </radialGradient>
+            <linearGradient id="orb-rim" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#fff" stop-opacity=".9"/>
+              <stop offset=".45" stop-color="#fff" stop-opacity=".08"/>
+              <stop offset="1" stop-color="#fff" stop-opacity=".5"/>
+            </linearGradient>
+            <linearGradient id="gear-fill" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#c9c6d0"/>
+              <stop offset="1" stop-color="#7f7c87"/>
+            </linearGradient>
+            <filter id="soft-glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="6"/>
+            </filter>
+            <path id="orbit-a" d="M40 260a220 86 0 1 0 440 0a220 86 0 1 0-440 0"/>
+            <path id="orbit-b" d="M70 260a190 70 0 1 0 380 0a190 70 0 1 0-380 0"/>
+          </defs>
+
+          <!-- glow behind orb -->
+          <circle cx="260" cy="260" r="150" fill="url(#grad-brand)" opacity=".35" filter="url(#soft-glow)"/>
+
+          <g transform="rotate(-18 260 260)">
+            <use href="#orbit-a" fill="none" stroke="url(#grad-brand)" stroke-width="1.5" stroke-dasharray="2 9" stroke-linecap="round" opacity=".9"/>
+            <circle r="7" fill="#38d6f5"><animateMotion dur="14s" repeatCount="indefinite"><mpath href="#orbit-a"/></animateMotion></circle>
+            <circle r="4.5" fill="#ff5fae"><animateMotion dur="14s" begin="-6s" repeatCount="indefinite"><mpath href="#orbit-a"/></animateMotion></circle>
+          </g>
+          <g transform="rotate(32 260 260)">
+            <use href="#orbit-b" fill="none" stroke="url(#grad-brand)" stroke-width="1.2" opacity=".55"/>
+            <circle r="5.5" fill="#8b7bff"><animateMotion dur="10s" begin="-3s" repeatCount="indefinite"><mpath href="#orbit-b"/></animateMotion></circle>
+            <circle r="3.5" fill="#fff"><animateMotion dur="10s" begin="-8s" repeatCount="indefinite"><mpath href="#orbit-b"/></animateMotion></circle>
+          </g>
+
+          <!-- glass orb -->
+          <circle cx="260" cy="260" r="128" fill="url(#orb-fill)"/>
+          <circle cx="260" cy="260" r="127" fill="none" stroke="url(#orb-rim)" stroke-width="2"/>
+          <ellipse cx="214" cy="196" rx="54" ry="26" fill="#fff" opacity=".22" transform="rotate(-32 214 196)"/>
+
+          <!-- logo -->
+          <g transform="translate(185 185) scale(1.5)">
+            <g>
+              <path fill="url(#gear-fill)" stroke="#2b2b2e" stroke-width="3" stroke-linejoin="round" d="M43.64 13.55L44.23 4.36L55.77 4.36L56.36 13.55A37 37 0 0 1 71.28 19.73L78.19 13.65L86.35 21.81L80.27 28.72A37 37 0 0 1 86.45 43.64L95.64 44.23L95.64 55.77L86.45 56.36A37 37 0 0 1 80.27 71.28L86.35 78.19L78.19 86.35L71.28 80.27A37 37 0 0 1 56.36 86.45L55.77 95.64L44.23 95.64L43.64 86.45A37 37 0 0 1 28.72 80.27L21.81 86.35L13.65 78.19L19.73 71.28A37 37 0 0 1 13.55 56.36L4.36 55.77L4.36 44.23L13.55 43.64A37 37 0 0 1 19.73 28.72L13.65 21.81L21.81 13.65L28.72 19.73A37 37 0 0 1 43.64 13.55Z"/>
+              <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="40s" repeatCount="indefinite"/>
+            </g>
+            <circle cx="50" cy="50" r="22" fill="#fff" stroke="#2b2b2e" stroke-width="3"/>
+            <circle cx="48.5" cy="51" r="8.5" fill="none" stroke="#111" stroke-width="4.6"/>
+            <rect x="54.7" y="40.2" width="4.6" height="21.6" rx="1.2" fill="#111"/>
+          </g>
+
+          <!-- language chips -->
+          <g class="chip chip-1">
+            <rect x="372" y="96" width="92" height="38" rx="19" fill="#fff" fill-opacity=".14" stroke="#fff" stroke-opacity=".45"/>
+            <circle cx="392" cy="115" r="6" fill="#f1e05a"/>
+            <text x="406" y="120" font-size="14" font-weight="600" fill="currentColor">JS</text>
+          </g>
+          <g class="chip chip-2">
+            <rect x="42" y="150" width="92" height="38" rx="19" fill="#fff" fill-opacity=".14" stroke="#fff" stroke-opacity=".45"/>
+            <circle cx="62" cy="169" r="6" fill="#3178c6"/>
+            <text x="76" y="174" font-size="14" font-weight="600" fill="currentColor">TS</text>
+          </g>
+          <g class="chip chip-3">
+            <rect x="350" y="392" width="100" height="38" rx="19" fill="#fff" fill-opacity=".14" stroke="#fff" stroke-opacity=".45"/>
+            <circle cx="370" cy="411" r="6" fill="#6f7cff"/>
+            <text x="384" y="416" font-size="14" font-weight="600" fill="currentColor">Lua</text>
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <section class="container stats" id="stats">
+      <div class="stat glass reveal"><svg class="ic"><use href="#i-repo"/></svg><b data-stat="repos">–</b><span>Repositories</span></div>
+      <div class="stat glass reveal"><svg class="ic"><use href="#i-users"/></svg><b data-stat="members">–</b><span>Members</span></div>
+      <div class="stat glass reveal"><svg class="ic"><use href="#i-code"/></svg><b data-stat="languages">–</b><span>Languages</span></div>
+      <div class="stat glass reveal"><svg class="ic"><use href="#i-star"/></svg><b data-stat="stars">–</b><span>Stars</span></div>
+    </section>
+
+    <section class="container section" id="repos">
+      <div class="section-head reveal">
+        <div>
+          <span class="kicker">Repositories</span>
+          <h2>Everything we build, in the open</h2>
+        </div>
+        <div class="repo-tools">
+          <label class="search glass">
+            <svg class="ic"><use href="#i-search"/></svg>
+            <input id="repo-search" type="search" placeholder="Search repositories" autocomplete="off">
+          </label>
+          <div class="seg glass" role="group" aria-label="Sort repositories">
+            <button type="button" data-sort="pushed" class="on">Recent</button>
+            <button type="button" data-sort="stars">Stars</button>
+            <button type="button" data-sort="name">A–Z</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="lang-overview glass reveal" id="lang-overview" hidden>
+        <div class="lang-overview-head">
+          <h3><svg class="ic"><use href="#i-pulse"/></svg> Languages across the network</h3>
+          <span class="muted" id="lang-overview-total"></span>
+        </div>
+        <div id="lang-overview-body"></div>
+      </div>
+
+      <div class="repo-grid" id="repo-grid"></div>
+    </section>
+
+    <section class="container section" id="members">
+      <div class="section-head reveal">
+        <div>
+          <span class="kicker">Members</span>
+          <h2>The people behind the network</h2>
+        </div>
+        <p class="muted section-note">Updates automatically as people join or contribute.</p>
+      </div>
+      <div class="member-grid" id="member-grid"></div>
+    </section>
+
+    <section class="container section" id="contact">
+      <div class="contact glass reveal">
+        <div class="contact-art" aria-hidden="true">
+          <svg viewBox="0 0 260 200">
+            <defs>
+              <linearGradient id="env-back" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#8b7bff" stop-opacity=".55"/>
+                <stop offset="1" stop-color="#38d6f5" stop-opacity=".35"/>
+              </linearGradient>
+              <linearGradient id="env-front" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#fff" stop-opacity=".45"/>
+                <stop offset="1" stop-color="#fff" stop-opacity=".12"/>
+              </linearGradient>
+            </defs>
+            <circle cx="130" cy="110" r="78" fill="url(#grad-brand)" opacity=".28" filter="url(#soft-glow)"/>
+            <rect x="50" y="70" width="160" height="108" rx="14" fill="url(#env-back)" stroke="#fff" stroke-opacity=".5"/>
+            <g class="letter">
+              <rect x="68" y="40" width="124" height="96" rx="10" fill="#fff" fill-opacity=".92"/>
+              <rect x="84" y="58" width="56" height="8" rx="4" fill="#8b7bff"/>
+              <rect x="84" y="74" width="92" height="6" rx="3" fill="#c9c6d6"/>
+              <rect x="84" y="86" width="78" height="6" rx="3" fill="#c9c6d6"/>
+              <rect x="84" y="98" width="86" height="6" rx="3" fill="#c9c6d6"/>
+            </g>
+            <path d="M50 92 130 140l80-48v72a14 14 0 0 1-14 14H64a14 14 0 0 1-14-14V92Z" fill="url(#env-front)" stroke="#fff" stroke-opacity=".6"/>
+            <path d="M54 172 112 128M206 172l-58-44" stroke="#fff" stroke-opacity=".5" stroke-width="1.5"/>
+            <g class="plane">
+              <path d="M214 30 248 16l-12 36-9-12-13-10Z" fill="#fff" fill-opacity=".9"/>
+              <path d="m227 40 21-24" stroke="#8b7bff" stroke-width="1.5"/>
+              <path d="M210 44c-14 8-22 4-30 12" stroke="#fff" stroke-opacity=".6" stroke-dasharray="3 5" fill="none" stroke-linecap="round"/>
+            </g>
+            <g fill="#fff">
+              <path d="M30 50c.6 5 2.4 6.8 7.4 7.4-5 .6-6.8 2.4-7.4 7.4-.6-5-2.4-6.8-7.4-7.4 5-.6 6.8-2.4 7.4-7.4Z" opacity=".8"/>
+              <path d="M232 120c.4 3 1.4 4 4.4 4.4-3 .4-4 1.4-4.4 4.4-.4-3-1.4-4-4.4-4.4 3-.4 4-1.4 4.4-4.4Z" opacity=".7"/>
+            </g>
+          </svg>
+        </div>
+        <div class="contact-copy">
+          <span class="kicker">Contact</span>
+          <h2>Get in touch</h2>
+          <p class="muted">Questions, collaborations, security reports or just saying hi. We read everything.</p>
+          <div class="email-row">
+            <a class="email glass" href="mailto:support@axisnet.work"><svg class="ic"><use href="#i-mail"/></svg><span>support@axisnet.work</span></a>
+            <button class="icon-btn glass" type="button" data-copy="support@axisnet.work" aria-label="Copy email address"><svg class="ic"><use href="#i-copy"/></svg></button>
+          </div>
+          <div class="contact-links">
+            <a class="btn btn-primary liquid" href="mailto:support@axisnet.work">
+              <span class="liquid-filter"></span><span class="liquid-tint"></span><span class="liquid-shine"></span>
+              <svg class="ic"><use href="#i-mail"/></svg> Send an email
+            </a>
+            <a class="btn btn-ghost glass" href="https://github.com/TheAxis-Network" target="_blank" rel="noopener"><svg class="ic"><use href="#i-github"/></svg> GitHub</a>
+            <a class="btn btn-ghost glass" href="https://axisnet.work" target="_blank" rel="noopener"><svg class="ic"><use href="#i-globe"/></svg> axisnet.work</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ═════════════ REPO VIEW ═════════════ -->
+  <div id="view-repo" class="view" hidden>
+    <div class="container repo-page" id="repo-page"></div>
+  </div>
+</main>
+
+<footer class="container footer">
+  <div class="footer-inner glass">
+    <a class="brand" href="#/"><img src="assets/logo.svg" alt="" width="28" height="28"><span>axisnetwork<b>.</b></span></a>
+    <span class="muted" id="footer-sync">Data from the GitHub API</span>
+    <span class="muted">© <span id="year"></span> TheAxis-Network · <a href="mailto:support@axisnet.work">support@axisnet.work</a></span>
+  </div>
+</footer>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js" defer></script>
+<script src="js/config.js" defer></script>
+<script src="js/github.js" defer></script>
+<script src="js/app.js" defer></script>
+</body>
+</html>
